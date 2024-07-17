@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: beetroot
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: beetroot-deployment
+  name: beetroot-deployment
+  namespace: beetroot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: beetroot-deployment
+  template:
+    metadata:
+      labels:
+        app: beetroot-deployment
+    spec:
+      containers:
+      - image: helgeste/beetroot:latest
+        name: beetroot
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: beetroot-np-svc
+  name: beetroot-np-svc
+  namespace: beetroot
+spec:
+  ports:
+  - name: beetroot-service
+    nodePort: 30123
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: beetroot-deployment
+  type: NodePort
