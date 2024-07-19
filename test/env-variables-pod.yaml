@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: test
+---
+apiVersion: v1
+data:
+  APP_COLOR: blue
+kind: ConfigMap
+metadata:
+  name: app-config-color
+  namespace: test
+---
+apiVersion: v1
+data:
+  APP_MOD: prod
+kind: ConfigMap
+metadata:
+  name: app-config-mod
+  namespace: test
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: env-variables-pod
+  name: env-variables-pod
+  namespace: test
+spec:
+  containers:
+  - image: nginx
+    name: env-variables-pod
+    ports:
+    - containerPort: 8080
+    envFrom:
+    - configMapRef:
+        name: app-config-color
+    - configMapRef:
+        name: app-config-mod
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: env-without-cm-pod
+  name: env-without-cm-pod
+  namespace: test
+spec:
+  containers:
+  - image: nginx
+    name: env-wihtout-using-cm-pod
+    ports:
+    - containerPort: 8080
+    env:
+      - name: APP_COLOR
+        value: red

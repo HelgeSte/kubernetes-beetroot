@@ -60,3 +60,25 @@ data:
       }
       }
 ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: rev-proxy-deploy
+  name: rev-proxy-deploy
+  namespace: beetroot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rev-proxy-deploy
+  template:
+    metadata:
+      labels:
+        app: rev-proxy-deploy
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        ports:
+        - containerPort: 80
