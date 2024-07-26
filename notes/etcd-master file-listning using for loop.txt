@@ -1,0 +1,5 @@
+Get list of files in /etc/:
+for FILE in /etc/*; do echo $FILE; done
+
+Read the content of a file:
+while read p; do echo "$p"; done < read-file.sh
